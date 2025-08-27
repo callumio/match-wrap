@@ -21,7 +21,8 @@
       overlays = [(import rust-overlay)];
       pkgs = import nixpkgs {inherit system overlays;};
       rustToolchain = pkgs.pkgsBuildHost.rust-bin.stable.latest.default;
-      nativeBuildInputs = with pkgs; [rustToolchain pkg-config];
+      tools = with pkgs; [];
+      nativeBuildInputs = with pkgs; [rustToolchain pkg-config] ++ tools;
     in
       with pkgs; {
         devShells.default = mkShell {inherit nativeBuildInputs;};

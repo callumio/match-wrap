@@ -11,17 +11,17 @@ readme = "README.md"
 license = "MIT"
 keywords = []
 categories = []
-exclude = [
-    "flake.nix",
-    "flake.lock",
-    ".envrc",
-]
+exclude = ["flake.nix", "flake.lock", ".envrc"]
 
 [dependencies]
 proc-macro2 = "1.0"
 quote = "1.0"
-syn = {version = "2.0", default-features = false, features = ["full", "parsing", "proc-macro", "printing"]}
+syn = { version = "2.0", default-features = false, features = [
+  "full",
+  "parsing",
+  "proc-macro",
+  "printing",
+] }
 
 [lib]
 proc-macro = true
-
