@@ -1,9 +1,9 @@
 use proc_macro::TokenStream;
 use quote::quote;
 use syn::{
-    Attribute, Expr, Pat, Result as SynResult, Token, Type,
+    Attribute, Expr, Pat, Result as SynResult, Token, Type, TypePath,
     parse::{Parse, ParseStream},
-    parse_macro_input,
+    parse_macro_input, parse_str,
 };
 
 struct MatchWrapInput {
@@ -41,12 +41,12 @@ impl Parse for MatchWrapInput {
     }
 }
 
-#[proc_macro]
-pub fn match_box(input: TokenStream) -> TokenStream {
+fn match_wrap(input: TokenStream, container_type: &str) -> TokenStream {
     const DIVERGE_ATTR: &str = "diverges";
-
     let input = parse_macro_input!(input as MatchWrapInput);
     let trait_type = &input.trait_type;
+    let container: TypePath = parse_str(container_type).expect("");
+
     let expr = &input.expr;
 
     let arms = input.arms.iter().map(|(attrs, pat, arm_expr)| {
@@ -55,9 +55,24 @@ pub fn match_box(input: TokenStream) -> TokenStream {
         if is_diverging {
             quote! {#pat => #arm_expr}
         } else {
-            quote! { #pat => ::std::boxed::Box::new(#arm_expr) as ::std::boxed::Box<#trait_type> }
+            quote! { #pat => #container::new(#arm_expr) as #container<#trait_type> }
         }
     });
 
     quote! { match #expr { #(#arms,)* } }.into()
+}
+
+#[proc_macro]
+pub fn match_box(input: TokenStream) -> TokenStream {
+    match_wrap(input, "::std::boxed::Box")
+}
+
+#[proc_macro]
+pub fn match_arc(input: TokenStream) -> TokenStream {
+    match_wrap(input, "::std::sync::Arc")
+}
+
+#[proc_macro]
+pub fn match_rc(input: TokenStream) -> TokenStream {
+    match_wrap(input, "::std::rc::Rc")
 }
