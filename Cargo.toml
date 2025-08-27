@@ -11,7 +11,7 @@ readme = "README.md"
 license = "MIT"
 keywords = []
 categories = []
-exclude = ["flake.nix", "flake.lock", ".envrc"]
+exclude = ["flake.nix", "flake.lock", ".envrc", "cliff.toml", "release-plz.toml", "rustfmt.toml", ".github"]
 
 [dependencies]
 proc-macro2 = "1.0"
