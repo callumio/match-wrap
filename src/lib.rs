@@ -45,7 +45,8 @@ fn match_wrap(input: TokenStream, container_type: &str) -> TokenStream {
     const DIVERGE_ATTR: &str = "diverges";
     let input = parse_macro_input!(input as MatchWrapInput);
     let trait_type = &input.trait_type;
-    let container: TypePath = parse_str(container_type).expect("");
+    let container: TypePath =
+        parse_str(container_type).expect("Incorrect container type. This is likely a bug.");
 
     let expr = &input.expr;
 
