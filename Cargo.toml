@@ -2,7 +2,7 @@
 name = "match-wrap"
 description = "Wrap incompatible match arms with a trait object container"
 authors = ["Callum Leslie <git@cleslie.uk>"]
-version = "0.1.1"
+version = "0.1.2"
 edition = "2024"
 documentation = "https://docs.rs/match-wrap"
 homepage = "https://github.com/callumio/match-wrap"
